@@ -1,2 +1,4 @@
-HPC_SWE
-=======
+swe_solvers
+===========
+
+Solvers for the shallow water equations.
