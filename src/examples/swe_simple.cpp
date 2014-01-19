@@ -31,7 +31,7 @@
 #include <string>
 #include <iostream>
 
-
+// Used to control write result on harddisk (0 = no write, 1 = write)
 #define WRITE_OUTPUT 1
 
 

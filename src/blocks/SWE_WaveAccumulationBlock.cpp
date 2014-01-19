@@ -34,8 +34,6 @@
 #include <limits>
 #include <immintrin.h>
 
-//#define USE_SCALASCA
-
 #ifdef USE_SCALASCA
 #include "epik_user.h"
 #endif
@@ -44,9 +42,7 @@
 #include <omp.h>
 #endif
 
-// Blocking the intel array notation was slower #define BLOCK_SIZE 4
 #define CHUNK_SIZE ny_end/omp_get_num_threads()/10
-//#define CHUNK_SIZE 15
 /**
  * Constructor of a SWE_WaveAccumulationBlock.
  *
@@ -86,7 +82,6 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 	//maximum (linearized) wave speed within one iteration
 	float maxWaveSpeed = (float) 0.;
 
-	// compute the net-updates for the vertical edges
 
 	int ny_end = ny+1;	// compiler might refuse to vectorize j-loop without this ...
 #ifdef LOOP_OPENMP
@@ -98,30 +93,31 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 
 	
 #ifdef VECTORIZE
+	// For best memory usage, memory was aligned
 	__assume_aligned(&h, 64);
 	__assume_aligned(&hu, 64);
 	__assume_aligned(&b, 64);
 	__assume_aligned(&hNetUpdates, 64);
 	__assume_aligned(&huNetUpdates, 64);
-
+	
+	// Temporary arrays to fully vectorize "inner" loop
 	__declspec(align(64)) float arr_hNetUpLeft[ny_end - 1]; 
 	__declspec(align(64)) float arr_hNetUpRight[ny_end - 1]; 
 	__declspec(align(64)) float arr_huNetUpLeft[ny_end - 1]; 
 	__declspec(align(64)) float arr_huNetUpRight[ny_end - 1]; 
 	__declspec(align(64)) float arr_maxEdgeSpeedVerti[ny_end - 1];
 #endif
-
-	//std::cout << "ny_end: " << ny_end << std::endl;
 	
+	
+	// compute the net-updates for the vertical edges
 #ifdef LOOP_OPENMP
-	// Use OpenMP for the outer loop
-	//#pragma omp for schedule(static)
 	#pragma omp for schedule(dynamic, CHUNK_SIZE)
-	//#pragma omp for schedule(guided, CHUNK_SIZE)
 #endif // LOOP_OPENMP
-	for(int i = 1; i < nx+2; i++) {
 
-	#ifdef VECTORIZE // Vectorize the inner loop
+	for(int i = 1; i < nx+2; i++) {
+	
+	// Full vectorisation of the "inner" loop via Intel Array Notation
+	#ifdef VECTORIZE
 		wavePropagationSolver.computeNetUpdates( h[i-1][1:ny_end - 1], h[i][1:ny_end - 1],
 											   hu[i-1][1:ny_end - 1], hu[i][1:ny_end - 1],
 											   b[i-1][1:ny_end - 1], b[i][1:ny_end - 1],
@@ -142,41 +138,8 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 			//update the maximum wave speed
 			maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
 		#endif // LOOP_OPENMP
-		/* Code producing strange differences in output files
-		for(int j = 1; j < ny_end; j++) {
-
-			float hNetUpLeft, hNetUpRight;
-			float huNetUpLeft, huNetUpRight;
-
-			wavePropagationSolver.computeNetUpdates( h[i-1][j], h[i][j],
-											   hu[i-1][j], hu[i][j],
-											   b[i-1][j], b[i][j],
-											   arr_hNetUpLeft[j-1], arr_hNetUpRight[j-1],
-											   arr_huNetUpLeft[j-1], arr_huNetUpRight[j-1],
-											   arr_maxEdgeSpeedVerti[j-1] );
-											   
-			// accumulate net updates to cell-wise net updates for h and hu
-			//hNetUpdates[i-1][j]  += dx_inv * hNetUpLeft;
-			//huNetUpdates[i-1][j] += dx_inv * huNetUpLeft;
-			//hNetUpdates[0][j]    += dx_inv * arr_hNetUpRight[j-1];
-			//huNetUpdates[i][j]   += dx_inv * arr_huNetUpRight[j-1];
-		}
 		
-		huNetUpdates[i][1:ny_end - 1]   += dx_inv * arr_huNetUpRight[:];
-		
-		hNetUpdates[i-1][1:ny_end - 1]  += dx_inv * arr_hNetUpLeft[:];
-		hNetUpdates[i][1:ny_end - 1]    += dx_inv * arr_hNetUpRight[:];		
-		huNetUpdates[i-1][1:ny_end - 1] += dx_inv * arr_huNetUpLeft[:];
-		
-		#ifdef LOOP_OPENMP
-			//update the thread-local maximum wave speed
-			l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
-		#else // LOOP_OPENMP
-			//update the maximum wave speed
-			maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
-		#endif // LOOP_OPENMP
-		*/
-	#else
+	#else // Original Code
 		for(int j = 1; j < ny_end; j++) {
 
 			float maxEdgeSpeed;
@@ -211,7 +174,8 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 	// compute the net-updates for the horizontal edges
 
 	ny_end = ny+2;	// compiler refused to vectorize j-loop without this ...
-#ifdef VECTORIZE // Vectorize the inner loop	
+#ifdef VECTORIZE
+	// Temporary arrays to fully vectorize "inner" loop
 	__declspec(align(64)) float arr_hNetUpDown[ny_end - 1]; 
 	__declspec(align(64)) float arr_hNetUpUpwards[ny_end - 1]; 
 	__declspec(align(64)) float arr_hvNetUpDown[ny_end - 1]; 
@@ -219,16 +183,14 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 	__declspec(align(64)) float arr_maxEdgeSpeedHori[ny_end - 1];
 #endif
 
-#ifdef LOOP_OPENMP // Use OpenMP for the outer loop
-	
-	//#pragma omp for schedule(static)
+#ifdef LOOP_OPENMP
 	#pragma omp for schedule(dynamic, CHUNK_SIZE)
-	//#pragma omp for schedule(guided, CHUNK_SIZE)
 #endif // LOOP_OPENMP
 
 	for(int i = 1; i < nx+1; i++) {
-
-	#ifdef VECTORIZE // Vectorize the inner loop	
+	
+	// Full vectorisation of the "inner" loop via Intel Array Notation
+	#ifdef VECTORIZE	
 		wavePropagationSolver.computeNetUpdates( h[i][0:ny_end - 1], h[i][1:ny_end - 1],
 										   hv[i][0:ny_end - 1], hv[i][1:ny_end - 1],
 										   b[i][0:ny_end - 1], b[i][1:ny_end - 1],
@@ -248,36 +210,7 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 			//update the maximum wave speed
 			maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[:]));
 		#endif // LOOP_OPENMP	
-	/* Not vectorized Code 
-		for(int j = 1; j < ny_end; j++) {
-			float maxEdgeSpeed;
-			float hNetUpDow, hNetUpUpw;
-			float hvNetUpDow, hvNetUpUpw;
-
-			wavePropagationSolver.computeNetUpdates( h[i][j-1], h[i][j],
-											   hv[i][j-1], hv[i][j],
-											   b[i][j-1], b[i][j],
-											   hNetUpDow, hNetUpUpw,
-											   hvNetUpDow, hvNetUpUpw,
-											   maxEdgeSpeed );
-
-			// accumulate net updates to cell-wise net updates for h and hu
-			hNetUpdates[i][j-1]  += dy_inv * hNetUpDow;
-			hvNetUpdates[i][j-1] += dy_inv * hvNetUpDow;
-			hNetUpdates[i][j]    += dy_inv * hNetUpUpw;
-			hvNetUpdates[i][j]   += dy_inv * hvNetUpUpw;
-
-			#ifdef LOOP_OPENMP
-				//update the thread-local maximum wave speed
-				l_maxWaveSpeed = std::max(l_maxWaveSpeed, maxEdgeSpeed);
-			#else // LOOP_OPENMP
-				//update the maximum wave speed
-				maxWaveSpeed = std::max(maxWaveSpeed, maxEdgeSpeed);
-			#endif // LOOP_OPENMP
-	
-		}
-	*/
-	#else
+	#else  // Original Code
 		for(int j = 1; j < ny_end; j++) {
 			float maxEdgeSpeed;
 			float hNetUpDow, hNetUpUpw;
@@ -309,17 +242,20 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 	}
 
 #ifdef LOOP_OPENMP
-#ifdef USE_SCALASCA
-  EPIK_USER_REG(r_name_crit, "WaveAccBlock_compNumFlux_crit");
-  EPIK_USER_START(r_name_crit);  
-#endif
+	#ifdef USE_SCALASCA
+	  EPIK_USER_REG(r_name_crit, "WaveAccBlock_compNumFlux_crit");
+	  EPIK_USER_START(r_name_crit);  
+	#endif
+	
+	// Syncronize maxWaveSpeed with all threads
 	#pragma omp critical
 	{
 		maxWaveSpeed = std::max(l_maxWaveSpeed, maxWaveSpeed);
 	}
-#ifdef USE_SCALASCA
-  EPIK_USER_END(r_name_crit);  
-#endif
+	
+	#ifdef USE_SCALASCA
+	  EPIK_USER_END(r_name_crit);  
+	#endif
 } // #pragma omp parallel
 #endif
 	
@@ -355,72 +291,79 @@ void SWE_WaveAccumulationBlock::updateUnknowns(float dt) {
 	EPIK_FUNC_START();
 #endif
 
+	// For best memory usage, memory was aligned
 	__assume_aligned(&h, 64);
 	__assume_aligned(&hu, 64);
 	__assume_aligned(&b, 64);
 	__assume_aligned(&hNetUpdates, 64);
 	__assume_aligned(&huNetUpdates, 64);
 	__assume_aligned(&hvNetUpdates, 64);
+	
 	int ny_end = ny + 1;
-  //update cell averages with the net-updates
+	
+	
+	//update cell averages with the net-updates
+	
 #ifdef LOOP_OPENMP
 	#pragma omp parallel for schedule(dynamic, CHUNK_SIZE)
 #endif // LOOP_OPENMP
+
 	for(int i = 1; i < nx+1; i++) {
-#ifdef VECTORIZE
-	h[i][1:ny] -= dt * hNetUpdates[i][1:ny];
-	hu[i][1:ny] -= dt * huNetUpdates[i][1:ny];
-	hv[i][1:ny] -= dt * hvNetUpdates[i][1:ny];
+	
+	// Full vectorisation of the "inner" loop via Intel Array Notation
+	#ifdef VECTORIZE
+		h[i][1:ny] -= dt * hNetUpdates[i][1:ny];
+		hu[i][1:ny] -= dt * huNetUpdates[i][1:ny];
+		hv[i][1:ny] -= dt * hvNetUpdates[i][1:ny];
 
-	hNetUpdates[i][1:ny] = (float) 0;
-	huNetUpdates[i][1:ny] = (float) 0;
-	hvNetUpdates[i][1:ny] = (float) 0;
+		hNetUpdates[i][1:ny] = (float) 0;
+		huNetUpdates[i][1:ny] = (float) 0;
+		hvNetUpdates[i][1:ny] = (float) 0;
 
-	if (h[i][1:ny] < 0.1)
-		hu[i][1:ny] = hv[i][1:ny] = 0.; //no water, no speed!
+		if (h[i][1:ny] < 0.1)
+			hu[i][1:ny] = hv[i][1:ny] = 0.; //no water, no speed!
 
-
-	if (h[i][1:ny] < 0) {
-		#ifndef NDEBUG
-			// Only print this warning when debug is enabled
-			// Otherwise we cannot vectorize this loop
-			if (h[i][1:ny] < -0.1) {
-				std::cerr << "Warning, negative height: (i,j)=(" << i << ")=" << h[i][1:ny] << std::endl;
-				std::cerr << "         b: " << b[i][1:ny] << std::endl;
-			}
-		#endif // NDEBUG
-		//zero (small) negative depths
-		h[i][1:ny] = (float) 0;
-	}
-#else
-	for(int j = 1; j < ny+1; j++) {
-
-		h[i][j]  -= dt * hNetUpdates[i][j];
-		hu[i][j] -= dt * huNetUpdates[i][j];
-		hv[i][j] -= dt * hvNetUpdates[i][j];
-
-		hNetUpdates[i][j] = (float) 0;
-		huNetUpdates[i][j] = (float) 0;
-		hvNetUpdates[i][j] = (float) 0;
-
-		//TODO: proper dryTol
-		if (h[i][j] < 0.1)
-			hu[i][j] = hv[i][j] = 0.; //no water, no speed!
-
-		if (h[i][j] < 0) {
+		if (h[i][1:ny] < 0) {
 			#ifndef NDEBUG
 				// Only print this warning when debug is enabled
 				// Otherwise we cannot vectorize this loop
-				if (h[i][j] < -0.1) {
-					std::cerr << "Warning, negative height: (i,j)=(" << i << "," << j << ")=" << h[i][j] << std::endl;
-					std::cerr << "         b: " << b[i][j] << std::endl;
+				if (h[i][1:ny] < -0.1) {
+					std::cerr << "Warning, negative height: (i,j)=(" << i << ")=" << h[i][1:ny] << std::endl;
+					std::cerr << "         b: " << b[i][1:ny] << std::endl;
 				}
 			#endif // NDEBUG
 			//zero (small) negative depths
-			h[i][j] = (float) 0;
+			h[i][1:ny] = (float) 0;
 		}
-	}
-#endif // VECTORIZE
+	#else // Original Code
+		for(int j = 1; j < ny+1; j++) {
+
+			h[i][j]  -= dt * hNetUpdates[i][j];
+			hu[i][j] -= dt * huNetUpdates[i][j];
+			hv[i][j] -= dt * hvNetUpdates[i][j];
+
+			hNetUpdates[i][j] = (float) 0;
+			huNetUpdates[i][j] = (float) 0;
+			hvNetUpdates[i][j] = (float) 0;
+
+			//TODO: proper dryTol
+			if (h[i][j] < 0.1)
+				hu[i][j] = hv[i][j] = 0.; //no water, no speed!
+
+			if (h[i][j] < 0) {
+				#ifndef NDEBUG
+					// Only print this warning when debug is enabled
+					// Otherwise we cannot vectorize this loop
+					if (h[i][j] < -0.1) {
+						std::cerr << "Warning, negative height: (i,j)=(" << i << "," << j << ")=" << h[i][j] << std::endl;
+						std::cerr << "         b: " << b[i][j] << std::endl;
+					}
+				#endif // NDEBUG
+				//zero (small) negative depths
+				h[i][j] = (float) 0;
+			}
+		}
+	#endif // VECTORIZE
 
 	}
 	
