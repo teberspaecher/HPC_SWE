@@ -98,6 +98,8 @@ public:
 		elem = new float[rows*cols];
 		for (int i = 0; i < rows*cols; i++)
 			elem[i] = 0;
+		// Adresses are now 64-Byte aligned
+		//std::cout << "Float2D-Adresses: " << &elem	<< std::endl;
 	}
 
 	~Float2D()
@@ -135,7 +137,7 @@ public:
   private:
     int rows;
     int cols;
-    float* elem; 
+    __declspec(align(64)) float* elem; 
 };
 
 //-------- Methods for Visualistion of Results --------

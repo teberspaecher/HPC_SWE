@@ -25,6 +25,7 @@
  *
  * TODO
  */
+//#define USE_SCALASCA
 
 #ifndef __SWE_BLOCK_HH
 #define __SWE_BLOCK_HH
@@ -234,10 +235,10 @@ class SWE_Block {
     // define arrays for unknowns: 
     // h (water level) and u,v (velocity in x and y direction)
     // hd, ud, and vd are respective CUDA arrays on GPU
-    Float2D h;	///< array that holds the water height for each element
-    Float2D hu; ///< array that holds the x-component of the momentum for each element (water height h multiplied by velocity in x-direction)
-    Float2D hv; ///< array that holds the y-component of the momentum for each element (water height h multiplied by velocity in y-direction)
-    Float2D b;  ///< array that holds the bathymetry data (sea floor elevation) for each element
+    __declspec(align(64)) Float2D h;	///< array that holds the water height for each element
+    __declspec(align(64)) Float2D hu; ///< array that holds the x-component of the momentum for each element (water height h multiplied by velocity in x-direction)
+    __declspec(align(64)) Float2D hv; ///< array that holds the y-component of the momentum for each element (water height h multiplied by velocity in y-direction)
+    __declspec(align(64)) Float2D b;  ///< array that holds the bathymetry data (sea floor elevation) for each element
     
     /// type of boundary conditions at LEFT, RIGHT, TOP, and BOTTOM boundary
     BoundaryType boundary[4];

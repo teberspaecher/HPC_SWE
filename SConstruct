@@ -189,9 +189,19 @@ else:
   elif env['compiler'] == 'cray':
     env['CXX'] = env['LINKERFORPROGRAMS'] = 'CC'
 
-
+# If Scalasca should be used, then either OpenMP, MPI oder both have to be set by Scons
 if env['useScalasca']:
-	env['CXX'] = 'scalasca -instrument -comp=none -user -mode=omp ' + env['CXX']
+	if env['openmp']:
+		if env['parallelization'] == 'mpi':
+			env['CXX'] = 'scalasca -instrument -comp=none -user -mode=hybrid ' + env['CXX']
+		else:
+			env['CXX'] = 'scalasca -instrument -comp=none -user -mode=omp ' + env['CXX']
+	else:
+		if env['parallelization'] == 'mpi':
+			env['CXX'] = 'scalasca -instrument -comp=none -user -mode=mpi ' + env['CXX']
+		else:
+			print 'ERROR: Scalasca has to be used with OpenMP or MPI (or both) (Scons openmp=true / parallelization=mpi)'
+			Exit(1)
 	
 # eclipse specific flag
 if env['compiler'] != 'cray':
@@ -245,6 +255,10 @@ if env['compileMode'] == 'release' and env['vectorize']:
 if env['compiler'] == 'intel' and env['showVectorization']:
   env.Append(CCFLAGS=['-vec-report2','-opt-report'])
 
+ # Scalasca
+if env['useScalasca']:
+	env.Append(CPPDEFINES=['USE_SCALASCA'])
+	
 # OpenMP parallelism
 if env['openmp']:
   env.Append(CPPDEFINES=['LOOP_OPENMP'])

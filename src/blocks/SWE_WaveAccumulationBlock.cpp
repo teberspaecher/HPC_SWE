@@ -34,7 +34,7 @@
 #include <limits>
 #include <immintrin.h>
 
-#define USE_SCALASCA
+//#define USE_SCALASCA
 
 #ifdef USE_SCALASCA
 #include "epik_user.h"
@@ -44,8 +44,7 @@
 #include <omp.h>
 #endif
 
-#define BLOCK_SIZE 48
-
+#define BLOCK_SIZE 4
 /**
  * Constructor of a SWE_WaveAccumulationBlock.
  *
@@ -87,42 +86,53 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 
 	// compute the net-updates for the vertical edges
 
+	int ny_end = ny+1;	// compiler might refuse to vectorize j-loop without this ...
 #ifdef LOOP_OPENMP
 #pragma omp parallel
 {
+#endif // LOOP_OPENMP
 	// thread-local maximum wave speed:
 	float l_maxWaveSpeed = (float) 0.;
 
-	int ny_end = ny+1;	// compiler might refuse to vectorize j-loop without this ...
 	
 #ifdef VECTORIZE
-	float arr_hNetUpLeft[ny_end - 1]; 
-	float arr_hNetUpRight[ny_end - 1]; 
-	float arr_huNetUpLeft[ny_end - 1]; 
-	float arr_huNetUpRight[ny_end - 1]; 
-	float arr_maxEdgeSpeedVerti[ny_end - 1];
+	__assume_aligned(&h, 64);
+	__assume_aligned(&hu, 64);
+	__assume_aligned(&b, 64);
+	__assume_aligned(&hNetUpdates, 64);
+	__assume_aligned(&huNetUpdates, 64);
+
+	__declspec(align(64)) float arr_hNetUpLeft[BLOCK_SIZE]; 
+	__declspec(align(64)) float arr_hNetUpRight[BLOCK_SIZE]; 
+	__declspec(align(64)) float arr_huNetUpLeft[BLOCK_SIZE]; 
+	__declspec(align(64)) float arr_huNetUpRight[BLOCK_SIZE]; 
+	__declspec(align(64)) float arr_maxEdgeSpeedVerti[BLOCK_SIZE];
 #endif
+
+	//std::cout << "ny_end: " << ny_end << std::endl;
+	
+#ifdef LOOP_OPENMP
 	// Use OpenMP for the outer loop
 	#pragma omp for
 #endif // LOOP_OPENMP
-	for (int iBlock = 1; iBlock < nx + 2; iBlock+=BLOCK_SIZE)
-	{
-		for(int i = iBlock; i < min(iBlock + BLOCK_SIZE, nx+2); i++) {
+	for(int i = 1; i < nx+2; i++) {
 
-		#ifdef VECTORIZE // Vectorize the inner loop
-
-			wavePropagationSolver.computeNetUpdates( h[i-1][1:ny_end - 1], h[i][1:ny_end - 1],
-												   hu[i-1][1:ny_end - 1], hu[i][1:ny_end - 1],
-												   b[i-1][1:ny_end - 1], b[i][1:ny_end - 1],
+	#ifdef VECTORIZE // Vectorize the inner loop
+		// BLOCK_SIZE has to be a divisor of the grid-size
+		for (int iBlock = 1; iBlock < ny_end; iBlock += BLOCK_SIZE)
+		{
+			wavePropagationSolver.computeNetUpdates( h[i-1][iBlock:BLOCK_SIZE], h[i][iBlock:BLOCK_SIZE],
+												   hu[i-1][iBlock:BLOCK_SIZE], hu[i][iBlock:BLOCK_SIZE],
+												   b[i-1][iBlock:BLOCK_SIZE], b[i][iBlock:BLOCK_SIZE],
 												   arr_hNetUpLeft[:], arr_hNetUpRight[:],
 												   arr_huNetUpLeft[:], arr_huNetUpRight[:],
 												   arr_maxEdgeSpeedVerti[:] );
 				
 			// accumulate net updates to cell-wise net updates for h and hu
-			hNetUpdates[i-1][1:ny_end - 1]  += dx_inv * arr_hNetUpLeft[:];
-			huNetUpdates[i-1][1:ny_end - 1] += dx_inv * arr_huNetUpLeft[:];
-			hNetUpdates[i][1:ny_end - 1]    += dx_inv * arr_hNetUpRight[:];
-			huNetUpdates[i][1:ny_end - 1]   += dx_inv * arr_huNetUpRight[:];
+			hNetUpdates[i-1][iBlock:BLOCK_SIZE]  += dx_inv * arr_hNetUpLeft[:];
+			huNetUpdates[i-1][iBlock:BLOCK_SIZE] += dx_inv * arr_huNetUpLeft[:];
+			hNetUpdates[i][iBlock:BLOCK_SIZE]    += dx_inv * arr_hNetUpRight[:];
+			huNetUpdates[i][iBlock:BLOCK_SIZE]   += dx_inv * arr_huNetUpRight[:];
 			
 			#ifdef LOOP_OPENMP
 				//update the thread-local maximum wave speed
@@ -131,36 +141,71 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 				//update the maximum wave speed
 				maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
 			#endif // LOOP_OPENMP
-		#else
-			for(int j = 1; j < ny_end; j++) {
+		}	
+			
+		/* Code producing strange differences in output files
+		for(int j = 1; j < ny_end; j++) {
 
-				float maxEdgeSpeed;
-				float hNetUpLeft, hNetUpRight;
-				float huNetUpLeft, huNetUpRight;
+			float hNetUpLeft, hNetUpRight;
+			float huNetUpLeft, huNetUpRight;
 
-				wavePropagationSolver.computeNetUpdates( h[i-1][j], h[i][j],
-												   hu[i-1][j], hu[i][j],
-												   b[i-1][j], b[i][j],
-												   hNetUpLeft, hNetUpRight,
-												   huNetUpLeft, huNetUpRight,
-												   maxEdgeSpeed );
-
-				// accumulate net updates to cell-wise net updates for h and hu
-				hNetUpdates[i-1][j]  += dx_inv * hNetUpLeft;
-				huNetUpdates[i-1][j] += dx_inv * huNetUpLeft;
-				hNetUpdates[i][j]    += dx_inv * hNetUpRight;
-				huNetUpdates[i][j]   += dx_inv * huNetUpRight;
-
-				#ifdef LOOP_OPENMP
-					//update the thread-local maximum wave speed
-					l_maxWaveSpeed = std::max(l_maxWaveSpeed, maxEdgeSpeed);
-				#else // LOOP_OPENMP
-					//update the maximum wave speed
-					maxWaveSpeed = std::max(maxWaveSpeed, maxEdgeSpeed);
-				#endif // LOOP_OPENMP
-			}
-		#endif // VECTORIZE
+			wavePropagationSolver.computeNetUpdates( h[i-1][j], h[i][j],
+											   hu[i-1][j], hu[i][j],
+											   b[i-1][j], b[i][j],
+											   arr_hNetUpLeft[j-1], arr_hNetUpRight[j-1],
+											   arr_huNetUpLeft[j-1], arr_huNetUpRight[j-1],
+											   arr_maxEdgeSpeedVerti[j-1] );
+											   
+			// accumulate net updates to cell-wise net updates for h and hu
+			//hNetUpdates[i-1][j]  += dx_inv * hNetUpLeft;
+			//huNetUpdates[i-1][j] += dx_inv * huNetUpLeft;
+			//hNetUpdates[0][j]    += dx_inv * arr_hNetUpRight[j-1];
+			//huNetUpdates[i][j]   += dx_inv * arr_huNetUpRight[j-1];
 		}
+		
+		huNetUpdates[i][1:ny_end - 1]   += dx_inv * arr_huNetUpRight[:];
+		
+		hNetUpdates[i-1][1:ny_end - 1]  += dx_inv * arr_hNetUpLeft[:];
+		hNetUpdates[i][1:ny_end - 1]    += dx_inv * arr_hNetUpRight[:];		
+		huNetUpdates[i-1][1:ny_end - 1] += dx_inv * arr_huNetUpLeft[:];
+		
+		#ifdef LOOP_OPENMP
+			//update the thread-local maximum wave speed
+			l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
+		#else // LOOP_OPENMP
+			//update the maximum wave speed
+			maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
+		#endif // LOOP_OPENMP
+		*/
+	#else
+		for(int j = 1; j < ny_end; j++) {
+
+			float maxEdgeSpeed;
+			float hNetUpLeft, hNetUpRight;
+			float huNetUpLeft, huNetUpRight;
+
+			wavePropagationSolver.computeNetUpdates( h[i-1][j], h[i][j],
+											   hu[i-1][j], hu[i][j],
+											   b[i-1][j], b[i][j],
+											   hNetUpLeft, hNetUpRight,
+											   huNetUpLeft, huNetUpRight,
+											   maxEdgeSpeed );
+
+			// accumulate net updates to cell-wise net updates for h and hu
+			hNetUpdates[i-1][j]  += dx_inv * hNetUpLeft;
+			huNetUpdates[i-1][j] += dx_inv * huNetUpLeft;
+			hNetUpdates[i][j]    += dx_inv * hNetUpRight;
+			huNetUpdates[i][j]   += dx_inv * huNetUpRight;
+
+			#ifdef LOOP_OPENMP
+				//update the thread-local maximum wave speed
+				l_maxWaveSpeed = std::max(l_maxWaveSpeed, maxEdgeSpeed);
+			#else // LOOP_OPENMP
+				//update the maximum wave speed
+				maxWaveSpeed = std::max(maxWaveSpeed, maxEdgeSpeed);
+			#endif // LOOP_OPENMP
+		}
+	#endif // VECTORIZE
 	}
 
 	// compute the net-updates for the horizontal edges
@@ -178,63 +223,88 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 	#pragma omp for
 #endif // LOOP_OPENMP
 
-	for (int iBlock = 1; iBlock < nx + 1; iBlock+=BLOCK_SIZE)
-	{
-		for(int i = 1; i < min(iBlock + BLOCK_SIZE, nx+1); i++) {
+	for(int i = 1; i < nx+1; i++) {
 
-		#ifdef VECTORIZE // Vectorize the inner loop	
-			
-			wavePropagationSolver.computeNetUpdates( h[i][0:ny_end - 1], h[i][1:ny_end - 1],
-											   hv[i][0:ny_end - 1], hv[i][1:ny_end - 1],
-											   b[i][0:ny_end - 1], b[i][1:ny_end - 1],
-											   arr_hNetUpDown[:], arr_hNetUpUpwards[:],
-											   arr_hvNetUpDown[:], arr_hvNetUpUpwards[:],
-											   arr_maxEdgeSpeedHori[:] );
+	#ifdef VECTORIZE // Vectorize the inner loop	
+	/*	Vectorized Code with Intel Array Notation */
+		wavePropagationSolver.computeNetUpdates( h[i][0:ny_end - 1], h[i][1:ny_end - 1],
+										   hv[i][0:ny_end - 1], hv[i][1:ny_end - 1],
+										   b[i][0:ny_end - 1], b[i][1:ny_end - 1],
+										   arr_hNetUpDown[:], arr_hNetUpUpwards[:],
+										   arr_hvNetUpDown[:], arr_hvNetUpUpwards[:],
+										   arr_maxEdgeSpeedHori[:] );
+		// accumulate net updates to cell-wise net updates for h and hu
+		hNetUpdates[i][0:ny_end - 1]  += dy_inv * arr_hNetUpDown[:];
+		hvNetUpdates[i][0:ny_end - 1] += dy_inv * arr_hvNetUpDown[:];
+		hNetUpdates[i][1:ny_end - 1]    += dy_inv * arr_hNetUpUpwards[:];
+		hvNetUpdates[i][1:ny_end - 1]   += dy_inv * arr_hvNetUpUpwards[:];	
+		
+		#ifdef LOOP_OPENMP
+			//update the thread-local maximum wave speed
+			l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[:]));
+		#else // LOOP_OPENMP
+			//update the maximum wave speed
+			maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[:]));
+		#endif // LOOP_OPENMP		
+	
+	/* Not vectorized Code 
+		for(int j = 1; j < ny_end; j++) {
+			float maxEdgeSpeed;
+			float hNetUpDow, hNetUpUpw;
+			float hvNetUpDow, hvNetUpUpw;
+
+			wavePropagationSolver.computeNetUpdates( h[i][j-1], h[i][j],
+											   hv[i][j-1], hv[i][j],
+											   b[i][j-1], b[i][j],
+											   hNetUpDow, hNetUpUpw,
+											   hvNetUpDow, hvNetUpUpw,
+											   maxEdgeSpeed );
+
 			// accumulate net updates to cell-wise net updates for h and hu
-			hNetUpdates[i][0:ny_end - 1]  += dy_inv * arr_hNetUpDown[:];
-			hvNetUpdates[i][0:ny_end - 1] += dy_inv * arr_hvNetUpDown[:];
-			hNetUpdates[i][1:ny_end - 1]    += dy_inv * arr_hNetUpUpwards[:];
-			hvNetUpdates[i][1:ny_end - 1]   += dy_inv * arr_hvNetUpUpwards[:];	
-			
+			hNetUpdates[i][j-1]  += dy_inv * hNetUpDow;
+			hvNetUpdates[i][j-1] += dy_inv * hvNetUpDow;
+			hNetUpdates[i][j]    += dy_inv * hNetUpUpw;
+			hvNetUpdates[i][j]   += dy_inv * hvNetUpUpw;
+
 			#ifdef LOOP_OPENMP
 				//update the thread-local maximum wave speed
-				l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[:]));
+				l_maxWaveSpeed = std::max(l_maxWaveSpeed, maxEdgeSpeed);
 			#else // LOOP_OPENMP
 				//update the maximum wave speed
-				maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[:]));
-			#endif // LOOP_OPENMP		
-			
-			
-		#else
-			for(int j = 1; j < ny_end; j++) {
-				float maxEdgeSpeed;
-				float hNetUpDow, hNetUpUpw;
-				float hvNetUpDow, hvNetUpUpw;
-
-				wavePropagationSolver.computeNetUpdates( h[i][j-1], h[i][j],
-												   hv[i][j-1], hv[i][j],
-												   b[i][j-1], b[i][j],
-												   hNetUpDow, hNetUpUpw,
-												   hvNetUpDow, hvNetUpUpw,
-												   maxEdgeSpeed );
-
-				// accumulate net updates to cell-wise net updates for h and hu
-				hNetUpdates[i][j-1]  += dy_inv * hNetUpDow;
-				hvNetUpdates[i][j-1] += dy_inv * hvNetUpDow;
-				hNetUpdates[i][j]    += dy_inv * hNetUpUpw;
-				hvNetUpdates[i][j]   += dy_inv * hvNetUpUpw;
-
-				#ifdef LOOP_OPENMP
-					//update the thread-local maximum wave speed
-					l_maxWaveSpeed = std::max(l_maxWaveSpeed, maxEdgeSpeed);
-				#else // LOOP_OPENMP
-					//update the maximum wave speed
-					maxWaveSpeed = std::max(maxWaveSpeed, maxEdgeSpeed);
-				#endif // LOOP_OPENMP
-			}
-		#endif // VECTORIZE
-
+				maxWaveSpeed = std::max(maxWaveSpeed, maxEdgeSpeed);
+			#endif // LOOP_OPENMP
+	
 		}
+	*/
+	#else
+		for(int j = 1; j < ny_end; j++) {
+			float maxEdgeSpeed;
+			float hNetUpDow, hNetUpUpw;
+			float hvNetUpDow, hvNetUpUpw;
+
+			wavePropagationSolver.computeNetUpdates( h[i][j-1], h[i][j],
+											   hv[i][j-1], hv[i][j],
+											   b[i][j-1], b[i][j],
+											   hNetUpDow, hNetUpUpw,
+											   hvNetUpDow, hvNetUpUpw,
+											   maxEdgeSpeed );
+
+			// accumulate net updates to cell-wise net updates for h and hu
+			hNetUpdates[i][j-1]  += dy_inv * hNetUpDow;
+			hvNetUpdates[i][j-1] += dy_inv * hvNetUpDow;
+			hNetUpdates[i][j]    += dy_inv * hNetUpUpw;
+			hvNetUpdates[i][j]   += dy_inv * hvNetUpUpw;
+
+			#ifdef LOOP_OPENMP
+				//update the thread-local maximum wave speed
+				l_maxWaveSpeed = std::max(l_maxWaveSpeed, maxEdgeSpeed);
+			#else // LOOP_OPENMP
+				//update the maximum wave speed
+				maxWaveSpeed = std::max(maxWaveSpeed, maxEdgeSpeed);
+			#endif // LOOP_OPENMP
+		}
+	#endif // VECTORIZE
+
 	}
 
 #ifdef LOOP_OPENMP
@@ -251,7 +321,7 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 #endif
 } // #pragma omp parallel
 #endif
-
+	
 	if(maxWaveSpeed > 0.00001) {
 		//TODO zeroTol
 

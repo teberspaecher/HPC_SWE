@@ -26,11 +26,6 @@
  * TODO
  */
 
-#define USE_SCALASCA
-
-#ifdef USE_SCALASCA
-	#include "epik_user.h"
-#endif
 
 #include "SWE_Block.hh"
 #include "tools/help.hh"
@@ -40,6 +35,9 @@
 #include <cassert>
 #include <limits>
 
+#ifdef USE_SCALASCA
+	#include "epik_user.h"
+#endif
 // gravitational acceleration
 const float SWE_Block::g = 9.81f;
 
