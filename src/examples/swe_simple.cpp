@@ -32,9 +32,11 @@
 #include <iostream>
 
 
-#define WRITE_OUTPUT 1
+#define USE_SCALASCA
 
-
+#ifdef USE_SCALASCA
+	#include "epik_user.h"
+#endif
 
 #ifdef VECTORIZE
 	#include <immintrin.h>
@@ -66,10 +68,6 @@
 #include "tools/help.hh"
 #include "tools/Logger.hh"
 #include "tools/ProgressBar.hh"
-
-#ifdef USE_SCALASCA
-	#include "epik_user.h"
-#endif
 
 /**
  * Main program for the simulation on a single SWE_WavePropagationBlock.
@@ -233,9 +231,6 @@ int main( int argc, char** argv ) {
   std::string l_fileName = generateBaseFileName(l_baseName,0,0);
   //boundary size of the ghost layers
   io::BoundarySize l_boundarySize = {{1, 1, 1, 1}};
-  
-
-
 #ifdef WRITENETCDF
   //construct a NetCdfWriter
   io::NetCdfWriter l_writer( l_fileName,
@@ -252,15 +247,12 @@ int main( int argc, char** argv ) {
 		  l_nX, l_nY,
 		  l_dX, l_dY );
 #endif
+  // Write zero time step
+  l_writer.writeTimeStep( l_wavePropgationBlock.getWaterHeight(),
+                          l_wavePropgationBlock.getDischarge_hu(),
+                          l_wavePropgationBlock.getDischarge_hv(),
+                          (float) 0.);
 
-	if (WRITE_OUTPUT)
-	{
-	  // Write zero time step
-	  l_writer.writeTimeStep( l_wavePropgationBlock.getWaterHeight(),
-							  l_wavePropgationBlock.getDischarge_hu(),
-							  l_wavePropgationBlock.getDischarge_hv(),
-							  (float) 0.);
-	}
 
   /**
    * Simulation.
@@ -331,14 +323,12 @@ int main( int argc, char** argv ) {
   EPIK_USER_REG(r_name_time, "main_loop_write");
   EPIK_USER_START(r_name_time);  
 #endif
-	if (WRITE_OUTPUT)
-	{
-		// write output
-		l_writer.writeTimeStep( l_wavePropgationBlock.getWaterHeight(),
-								l_wavePropgationBlock.getDischarge_hu(),
-								l_wavePropgationBlock.getDischarge_hv(),
-								l_t); 
-	}					
+    // write output
+    l_writer.writeTimeStep( l_wavePropgationBlock.getWaterHeight(),
+                            l_wavePropgationBlock.getDischarge_hu(),
+                            l_wavePropgationBlock.getDischarge_hv(),
+                            l_t); 
+						
 	
 #ifdef USE_SCALASCA
   EPIK_USER_END(r_name_time);  

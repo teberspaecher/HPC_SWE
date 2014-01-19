@@ -25,7 +25,6 @@
  *
  * TODO
  */
-//#define USE_SCALASCA
 
 #ifndef __SWE_BLOCK_HH
 #define __SWE_BLOCK_HH
