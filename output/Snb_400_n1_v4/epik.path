@@ -16,7 +16,7 @@ main
  |  |  |  |  |  |  |  + !$omp critical sblock @SWE_WaveAccumulationBlock.cpp:317
  |  |  |  |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:323
  |  |  |  + updateUnknowns
- |  |  |  |  + !$omp parallel @SWE_WaveAccumulationBlock.cpp:360
- |  |  |  |  |  + !$omp for @SWE_WaveAccumulationBlock.cpp:360
- |  |  |  |  |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:418
+ |  |  |  |  + !$omp parallel @SWE_WaveAccumulationBlock.cpp:367
+ |  |  |  |  |  + !$omp for @SWE_WaveAccumulationBlock.cpp:367
+ |  |  |  |  |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:425
  |  |  |  + main_loop_write

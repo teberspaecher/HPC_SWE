@@ -1,16 +1,16 @@
-S=C=A=N: Sun Jan 19 20:00:32 2014: Analyze start
-/home/hpc/t1221/lu26xan/bin/scout.omp ./epik_SWE_intel_release_none_fwavevec_vec_Ox1_trace
+S=C=A=N: Sun Jan 19 21:49:29 2014: Analyze start
+/home/hpc/t1221/lu26xag/bin/scout.omp ./epik_SWE_intel_release_none_fwavevec_vec_Ox1_trace
 SCOUT   Copyright (c) 1998-2013 Forschungszentrum Juelich GmbH
 
 Analyzing experiment archive ./epik_SWE_intel_release_none_fwavevec_vec_Ox1_trace
 
 Reading definitions file  ... done (0.001s).
-Reading event trace files ... done (0.020s).
+Reading event trace files ... done (0.019s).
 Preprocessing             ... done (0.003s).
 Analyzing trace data      ... done (0.003s).
-Writing report files      ... done (0.002s).
+Writing report files      ... done (0.001s).
 
-Max. memory usage         : 3.500MB
+Max. memory usage         : 3.496MB
 
-Total processing time     : 0.034s
-S=C=A=N: Sun Jan 19 20:00:32 2014: Analyze done (status=0) 0s
+Total processing time     : 0.035s
+S=C=A=N: Sun Jan 19 21:49:30 2014: Analyze done (status=0) 1s

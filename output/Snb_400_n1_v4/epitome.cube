@@ -238,87 +238,87 @@
       <name>omp_unset_nest_lock</name>
       <descr>OMP</descr>
     </region>
-    <region id="23" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="93" end="323">
+    <region id="23" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="93" end="323">
       <name>!$omp parallel @SWE_WaveAccumulationBlock.cpp:93</name>
       <descr>OMP</descr>
     </region>
-    <region id="24" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="323" end="323">
+    <region id="24" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="323" end="323">
       <name>!$omp ibarrier @SWE_WaveAccumulationBlock.cpp:323</name>
       <descr>OMP</descr>
     </region>
-    <region id="25" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="119" end="209">
+    <region id="25" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="119" end="209">
       <name>!$omp for @SWE_WaveAccumulationBlock.cpp:119</name>
       <descr>OMP</descr>
     </region>
-    <region id="26" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="209" end="209">
+    <region id="26" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="209" end="209">
       <name>!$omp ibarrier @SWE_WaveAccumulationBlock.cpp:209</name>
       <descr>OMP</descr>
     </region>
-    <region id="27" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="225" end="309">
+    <region id="27" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="225" end="309">
       <name>!$omp for @SWE_WaveAccumulationBlock.cpp:225</name>
       <descr>OMP</descr>
     </region>
-    <region id="28" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="309" end="309">
+    <region id="28" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="309" end="309">
       <name>!$omp ibarrier @SWE_WaveAccumulationBlock.cpp:309</name>
       <descr>OMP</descr>
     </region>
-    <region id="29" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="317" end="318">
+    <region id="29" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="317" end="318">
       <name>!$omp critical sblock @SWE_WaveAccumulationBlock.cpp:317</name>
       <descr>POMP</descr>
     </region>
-    <region id="30" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="316" end="319">
+    <region id="30" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="316" end="319">
       <name>!$omp critical @SWE_WaveAccumulationBlock.cpp:316</name>
       <descr>OMP</descr>
     </region>
-    <region id="31" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="360" end="418">
-      <name>!$omp for @SWE_WaveAccumulationBlock.cpp:360</name>
+    <region id="31" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="367" end="425">
+      <name>!$omp for @SWE_WaveAccumulationBlock.cpp:367</name>
       <descr>OMP</descr>
     </region>
-    <region id="32" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="360" end="418">
-      <name>!$omp parallel @SWE_WaveAccumulationBlock.cpp:360</name>
+    <region id="32" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="367" end="425">
+      <name>!$omp parallel @SWE_WaveAccumulationBlock.cpp:367</name>
       <descr>OMP</descr>
     </region>
-    <region id="33" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="418" end="418">
-      <name>!$omp ibarrier @SWE_WaveAccumulationBlock.cpp:418</name>
+    <region id="33" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="425" end="425">
+      <name>!$omp ibarrier @SWE_WaveAccumulationBlock.cpp:425</name>
       <descr>OMP</descr>
     </region>
-    <region id="34" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="83" end="-1">
+    <region id="34" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/examples/swe_simple.cpp" begin="83" end="-1">
       <name>main</name>
       <descr>USR</descr>
     </region>
-    <region id="35" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="85" end="-1">
+    <region id="35" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/examples/swe_simple.cpp" begin="85" end="-1">
       <name>main_region</name>
       <descr>USR</descr>
     </region>
-    <region id="36" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_Block.cpp" begin="98" end="-1">
+    <region id="36" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_Block.cpp" begin="98" end="-1">
       <name>initScenario</name>
       <descr>USR</descr>
     </region>
-    <region id="37" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="209" end="-1">
+    <region id="37" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/examples/swe_simple.cpp" begin="209" end="-1">
       <name>main_region_init_checkpoints</name>
       <descr>USR</descr>
     </region>
-    <region id="38" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="285" end="-1">
+    <region id="38" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/examples/swe_simple.cpp" begin="285" end="-1">
       <name>main_loop</name>
       <descr>USR</descr>
     </region>
-    <region id="39" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_Block.cpp" begin="421" end="-1">
+    <region id="39" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_Block.cpp" begin="421" end="-1">
       <name>setGhostLayer</name>
       <descr>USR</descr>
     </region>
-    <region id="40" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="79" end="-1">
+    <region id="40" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="79" end="-1">
       <name>computeNumericalFluxes</name>
       <descr>USR</descr>
     </region>
-    <region id="41" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="314" end="-1">
+    <region id="41" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="314" end="-1">
       <name>WaveAccBlock_compNumFlux_crit</name>
       <descr>USR</descr>
     </region>
-    <region id="42" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="355" end="-1">
+    <region id="42" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="355" end="-1">
       <name>updateUnknowns</name>
       <descr>USR</descr>
     </region>
-    <region id="43" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="332" end="-1">
+    <region id="43" mod="/home/hpc/t1221/lu26xag/Project/SWE_GIT_TEST/HPC_SWE/src/examples/swe_simple.cpp" begin="332" end="-1">
       <name>main_loop_write</name>
       <descr>USR</descr>
     </region>
@@ -371,7 +371,7 @@
     <machine Id="0">
       <name>Linux Intel</name>
       <node Id="0">
-        <name>mac-ati01</name>
+        <name>mac-snb28</name>
         <process Id="0">
           <rank>0</rank>
           <thread Id="0">
@@ -459,86 +459,86 @@
     </matrix>
     <matrix metricId="14">
       <row cnodeId="8">
-0.00151692517102
+0.00144423358142
       </row>
       <row cnodeId="18">
-0.000969669781625
+0.000750249251723
       </row>
     </matrix>
     <matrix metricId="15">
       <row cnodeId="8">
-0.00215722061694
+0.00195725029334
       </row>
       <row cnodeId="18">
-0.00127466954291
+0.000981419347227
       </row>
     </matrix>
     <matrix metricId="16">
       <row cnodeId="0">
-1.01244077086e-05
+1.05397775769e-05
       </row>
       <row cnodeId="1">
-0.00375812407583
+0.0035365363583
       </row>
       <row cnodeId="2">
-0.00286923442036
+0.00287486193702
       </row>
       <row cnodeId="3">
-7.47982412577e-05
+5.17289154232e-05
       </row>
       <row cnodeId="4">
-1.11769120675
+0.000147575512528
       </row>
       <row cnodeId="5">
-0.0132119525224
+0.0172198242508
       </row>
       <row cnodeId="6">
-0.0117728076875
+0.0111485710368
       </row>
       <row cnodeId="7">
-0.000766482204199
+0.000807141885161
       </row>
       <row cnodeId="8">
-0.00269586406648
+0.00239328900352
       </row>
       <row cnodeId="9">
-0.822336455807
+0.837489190046
       </row>
       <row cnodeId="10">
-0.000668072141707
+0.000485785771161
       </row>
       <row cnodeId="11">
-0.794453832321
+0.808708693832
       </row>
       <row cnodeId="12">
-0.0003049550578
+0.000280183274299
       </row>
       <row cnodeId="13">
-0.000161278992891
+0.000171552412212
       </row>
       <row cnodeId="14">
-0.000823714770377
+0.000738039147109
       </row>
       <row cnodeId="15">
-0.00010297074914
+7.84895382822e-05
       </row>
       <row cnodeId="16">
-0.000144767574966
+0.000151807907969
       </row>
       <row cnodeId="17">
-0.000311541371047
+0.000342801213264
       </row>
       <row cnodeId="18">
-0.0014128703624
+0.00111622503027
       </row>
       <row cnodeId="19">
-0.437623113394
+0.449252012186
       </row>
       <row cnodeId="20">
-0.000472599640489
+0.000288755632937
       </row>
       <row cnodeId="21">
-22.6054479731
+1.76415778697e-05
       </row>
     </matrix>
   </severity>
