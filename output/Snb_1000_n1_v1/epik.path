@@ -1,0 +1,19 @@
+main
+ + main_region
+ |  + initScenario
+ + main_loop
+ |  + setGhostLayer
+ |  + computeNumericalFluxes
+ |  |  + !$omp parallel @SWE_WaveAccumulationBlock.cpp:89
+ |  |  |  + !$omp for @SWE_WaveAccumulationBlock.cpp:95
+ |  |  |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:157
+ |  |  |  + !$omp for @SWE_WaveAccumulationBlock.cpp:162
+ |  |  |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:196
+ |  |  |  + !$omp critical @SWE_WaveAccumulationBlock.cpp:199
+ |  |  |  |  + !$omp critical sblock @SWE_WaveAccumulationBlock.cpp:200
+ |  |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:204
+ |  + updateUnknowns
+ |  |  + !$omp parallel @SWE_WaveAccumulationBlock.cpp:241
+ |  |  |  + !$omp for @SWE_WaveAccumulationBlock.cpp:241
+ |  |  |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:272
+ |  + main_loop_time

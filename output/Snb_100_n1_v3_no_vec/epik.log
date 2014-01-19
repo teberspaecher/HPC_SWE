@@ -1,0 +1,259 @@
+S=C=A=N: Fri Jan 17 15:57:43 2014: Collect start
+./SWE_intel_release_none_fwavevec_vec -x 100 -y 100 -o output/test
+
+*************************************************************
+Welcome to SWE
+
+SWE Copyright (C) 2012-2013
+  Technische Universitaet Muenchen
+  Department of Informatics
+  Chair of Scientific Computing
+  http://www5.in.tum.de/SWE
+
+SWE comes with ABSOLUTELY NO WARRANTY.
+SWE is free software, and you are welcome to redistribute it
+under certain conditions.
+Details can be found in the file 'gpl.txt'.
+*************************************************************
+[.0]EPIK: Activated ./epik_SWE_intel_release_none_fwavevec_vec_Ox1_trace [10000000 bytes]
+Fri Jan 17 15:57:43 2014	Writing output file at time: 0 seconds
+
+------------------------------------------------------------------
+Fri Jan 17 15:57:43 2014	Everything is set up, starting the simulation.
+------------------------------------------------------------------
+[.0]EPIK: [3]EXIT  rid= 35 ****MISMATCH**** 37
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.0792025 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.157803 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.236168 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.314444 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.392718 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.471006 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.549315 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.627625 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.705943 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.78428 seconds.
+Fri Jan 17 15:57:43 2014	Writing output file at time: 0.78428 seconds
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.86264 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 0.941028 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.01944 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.09788 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.17634 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.25483 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.33334 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.41187 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.49042 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.56899 seconds.
+Fri Jan 17 15:57:43 2014	Writing output file at time: 1.56899 seconds
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.64758 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.72619 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.80482 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.88347 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 1.96213 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.04081 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.1195 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.19821 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.27694 seconds.
+Fri Jan 17 15:57:43 2014	Writing output file at time: 2.27694 seconds
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.35567 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.43442 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.51318 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.59195 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.67074 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.74954 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.82834 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.90716 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 2.98599 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.06482 seconds.
+Fri Jan 17 15:57:43 2014	Writing output file at time: 3.06482 seconds
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.14366 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.22252 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.30138 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.38025 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.45912 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.538 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.61689 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.69579 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.77469 seconds.
+Fri Jan 17 15:57:43 2014	Writing output file at time: 3.77469 seconds
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.8536 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 3.93252 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 4.01144 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 4.09036 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 4.16929 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 4.24823 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 4.32717 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 4.40612 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 4.48507 seconds.
+Fri Jan 17 15:57:43 2014	Simulation at time: 4.56403 seconds.
+Fri Jan 17 15:57:43 2014	Writing output file at time: 4.56403 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 4.64298 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 4.72195 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 4.80092 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 4.87989 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 4.95886 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.03784 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.11682 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.1958 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.27479 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 5.27479 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.35378 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.43277 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.51177 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.59077 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.66977 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.74877 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.82778 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.90679 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 5.9858 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.06481 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 6.06481 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.14382 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.22284 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.30186 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.38088 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.45991 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.53893 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.61796 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.69699 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.77602 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 6.77602 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.85506 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 6.93409 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.01313 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.09217 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.17121 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.25025 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.3293 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.40835 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.48739 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.56644 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 7.56644 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.64549 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.72454 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.8036 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.88265 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 7.96171 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.04077 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.11983 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.19889 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.27795 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 8.27795 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.35701 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.43608 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.51515 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.59421 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.67328 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.75235 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.83142 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.91049 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 8.98957 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.06864 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 9.06864 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.14772 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.22679 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.30587 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.38495 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.46403 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.54311 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.62219 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.70127 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.78036 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 9.78036 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.85944 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 9.93853 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.0176 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.0967 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.1758 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.2549 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.334 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.4131 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.4922 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.5713 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 10.5713 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.6503 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.7294 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.8085 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.8876 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 10.9667 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.0458 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.1249 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.204 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.2831 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 11.2831 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.3622 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.4413 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.5205 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.5996 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.6787 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.7578 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.8369 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.916 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 11.9951 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.0742 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 12.0742 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.1533 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.2324 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.3115 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.3907 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.4698 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.5489 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.628 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.7071 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.7862 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 12.7862 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.8653 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 12.9444 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.0236 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.1027 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.1818 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.2609 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.34 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.4191 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.4982 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.5774 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 13.5774 seconds
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.6565 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.7356 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.8147 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.8939 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 13.973 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 14.0522 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 14.1313 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 14.2105 seconds.
+Fri Jan 17 15:57:44 2014	Simulation at time: 14.2896 seconds.
+Fri Jan 17 15:57:44 2014	Writing output file at time: 14.2896 seconds
+Fri Jan 17 15:57:45 2014	Simulation at time: 14.3688 seconds.
+Fri Jan 17 15:57:45 2014	Simulation at time: 14.448 seconds.
+Fri Jan 17 15:57:45 2014	Simulation at time: 14.5271 seconds.
+Fri Jan 17 15:57:45 2014	Simulation at time: 14.6063 seconds.
+Fri Jan 17 15:57:45 2014	Simulation at time: 14.6855 seconds.
+Fri Jan 17 15:57:45 2014	Simulation at time: 14.7647 seconds.
+Fri Jan 17 15:57:45 2014	Simulation at time: 14.8439 seconds.
+Fri Jan 17 15:57:45 2014	Simulation at time: 14.9231 seconds.
+Fri Jan 17 15:57:45 2014	Simulation at time: 15.0023 seconds.
+Fri Jan 17 15:57:45 2014	Writing output file at time: 15.0023 seconds
+
+------------------------------------------------------------------
+Fri Jan 17 15:57:45 2014	Simulation finished. Printing statistics for each process.
+------------------------------------------------------------------
+Fri Jan 17 15:57:45 2014	process 0 - CPU time: 0.04 seconds
+Fri Jan 17 15:57:45 2014	process 0 - wall clock time: 2 seconds
+Fri Jan 17 15:57:45 2014	190 iterations done
+[.0]EPIK: [2]EXIT  rid= 34 ****MISMATCH**** 37
+[.0]EPIK: Forcing exit of frame 1 path 2 region 35
+[.0]EPIK: Forcing exit of frame 0 path 1 region 34
+[.0]EPIK: Closing experiment ./epik_SWE_intel_release_none_fwavevec_vec_Ox1_trace [0.000GB] (max 81954)
+[.0]EPIK: Flushed 81954 bytes to file ./SWE_intel_release_none_fwavevec_vec_Ox1_trace.FFFFFFFFA8C07000.18468.0.elg
+[.0]EPIK: Largest definitions buffer 5405 bytes
+[.0]EPIK: 23 unique paths (25 max paths, 9 max frames, 0 unknowns)
+[.0]EPIK: Unifying... done (0.017s)
+[.0]EPIK: Collating... done (0.001s)
+[.0]EPIK: Merging thread traces...
+[.0]EPIK: Merging thread traces... (0.028s)
+[.0]EPIK: 1flush=0.000GB@10.898MB/s, Pflush=0.000GB@0.000MB/s
+[.0]EPIK: Closed experiment ./epik_SWE_intel_release_none_fwavevec_vec_Ox1_trace (0.054s) maxHeap(0)=4.125/4.125MB
+
+*************************************************************
+SWE finished successfully.
+*************************************************************
+S=C=A=N: Fri Jan 17 15:57:45 2014: Collect done (status=0) 2s

@@ -1,0 +1,13 @@
+main
+ + !$omp parallel @SWE_WaveAccumulationBlock.cpp:85
+ |  + !$omp for @SWE_WaveAccumulationBlock.cpp:91
+ |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:126
+ |  + !$omp for @SWE_WaveAccumulationBlock.cpp:131
+ |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:165
+ |  + !$omp critical @SWE_WaveAccumulationBlock.cpp:168
+ |  |  + !$omp critical sblock @SWE_WaveAccumulationBlock.cpp:169
+ |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:173
+ + updateUnknowns
+ |  + !$omp parallel @SWE_WaveAccumulationBlock.cpp:206
+ |  |  + !$omp for @SWE_WaveAccumulationBlock.cpp:206
+ |  |  |  + !$omp ibarrier @SWE_WaveAccumulationBlock.cpp:237

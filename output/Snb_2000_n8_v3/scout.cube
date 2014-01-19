@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cube version="3.0">
+  <attr key="CUBE_CT_AGGR" value="SUM"/>
+  <doc>
+    <mirrors>
+      <murl>http://apps.fz-juelich.de/scalasca/releases/scalasca/1.4/help/</murl>
+    </mirrors>
+  </doc>
+  <metrics>
+    <metric id="0">
+      <disp_name>Time</disp_name>
+      <uniq_name>time</uniq_name>
+      <dtype>FLOAT</dtype>
+      <uom>sec</uom>
+      <url>@mirror@scalasca_patterns-1.4.html#time</url>
+      <descr>Total CPU allocation time (includes time allocated for idle threads)</descr>
+    </metric>
+    <metric id="1">
+      <disp_name>Visits</disp_name>
+      <uniq_name>visits</uniq_name>
+      <dtype>INTEGER</dtype>
+      <uom>occ</uom>
+      <url>@mirror@scalasca_patterns-1.4.html#visits</url>
+      <descr>Number of visits</descr>
+    </metric>
+    <metric id="2">
+      <disp_name>Management</disp_name>
+      <uniq_name>omp_management</uniq_name>
+      <dtype>FLOAT</dtype>
+      <uom>sec</uom>
+      <url>@mirror@scalasca_patterns-1.4.html#omp_management</url>
+      <descr>Time spent in OpenMP thread management</descr>
+      <metric id="3">
+        <disp_name>Fork</disp_name>
+        <uniq_name>omp_fork</uniq_name>
+        <dtype>FLOAT</dtype>
+        <uom>sec</uom>
+        <url>@mirror@scalasca_patterns-1.4.html#omp_fork</url>
+        <descr>Time spent in OpenMP thread forking</descr>
+      </metric>
+    </metric>
+    <metric id="4">
+      <disp_name>Wait at Barrier</disp_name>
+      <uniq_name>omp_ebarrier_wait</uniq_name>
+      <dtype>FLOAT</dtype>
+      <uom>sec</uom>
+      <url>@mirror@scalasca_patterns-1.4.html#omp_ebarrier_wait</url>
+      <descr>Waiting time in front of explicit OpenMP barriers</descr>
+    </metric>
+    <metric id="5">
+      <disp_name>Wait at Barrier</disp_name>
+      <uniq_name>omp_ibarrier_wait</uniq_name>
+      <dtype>FLOAT</dtype>
+      <uom>sec</uom>
+      <url>@mirror@scalasca_patterns-1.4.html#omp_ibarrier_wait</url>
+      <descr>Waiting time in front of implicit OpenMP barriers</descr>
+    </metric>
+  </metrics>
+  <program>
+    <region id="0" mod="EPIK" begin="-1" end="-1">
+      <name>UNKNOWN</name>
+      <url></url>
+      <descr>EPIK</descr>
+    </region>
+    <region id="1" mod="EPIK" begin="-1" end="-1">
+      <name>TRACING</name>
+      <url></url>
+      <descr>EPIK</descr>
+    </region>
+    <region id="2" mod="EPIK" begin="-1" end="-1">
+      <name>PAUSING</name>
+      <url></url>
+      <descr>EPIK</descr>
+    </region>
+    <region id="3" mod="OMP" begin="-1" end="-1">
+      <name>omp_destroy_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="4" mod="OMP" begin="-1" end="-1">
+      <name>omp_destroy_nest_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="5" mod="OMP" begin="-1" end="-1">
+      <name>omp_get_dynamic</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="6" mod="OMP" begin="-1" end="-1">
+      <name>omp_get_max_threads</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="7" mod="OMP" begin="-1" end="-1">
+      <name>omp_get_nested</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="8" mod="OMP" begin="-1" end="-1">
+      <name>omp_get_num_procs</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="9" mod="OMP" begin="-1" end="-1">
+      <name>omp_get_num_threads</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="10" mod="OMP" begin="-1" end="-1">
+      <name>omp_get_thread_num</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="11" mod="OMP" begin="-1" end="-1">
+      <name>omp_in_parallel</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="12" mod="OMP" begin="-1" end="-1">
+      <name>omp_init_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="13" mod="OMP" begin="-1" end="-1">
+      <name>omp_init_nest_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="14" mod="OMP" begin="-1" end="-1">
+      <name>omp_set_dynamic</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="15" mod="OMP" begin="-1" end="-1">
+      <name>omp_set_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="16" mod="OMP" begin="-1" end="-1">
+      <name>omp_set_nest_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="17" mod="OMP" begin="-1" end="-1">
+      <name>omp_set_nested</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="18" mod="OMP" begin="-1" end="-1">
+      <name>omp_set_num_threads</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="19" mod="OMP" begin="-1" end="-1">
+      <name>omp_test_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="20" mod="OMP" begin="-1" end="-1">
+      <name>omp_test_nest_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="21" mod="OMP" begin="-1" end="-1">
+      <name>omp_unset_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="22" mod="OMP" begin="-1" end="-1">
+      <name>omp_unset_nest_lock</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="23" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="89" end="243">
+      <name>!$omp parallel @SWE_WaveAccumulationBlock.cpp:89</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="24" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="243" end="243">
+      <name>!$omp ibarrier @SWE_WaveAccumulationBlock.cpp:243</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="25" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="104" end="159">
+      <name>!$omp for @SWE_WaveAccumulationBlock.cpp:104</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="26" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="159" end="159">
+      <name>!$omp ibarrier @SWE_WaveAccumulationBlock.cpp:159</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="27" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="173" end="229">
+      <name>!$omp for @SWE_WaveAccumulationBlock.cpp:173</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="28" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="229" end="229">
+      <name>!$omp ibarrier @SWE_WaveAccumulationBlock.cpp:229</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="29" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="237" end="238">
+      <name>!$omp critical sblock @SWE_WaveAccumulationBlock.cpp:237</name>
+      <url></url>
+      <descr>POMP</descr>
+    </region>
+    <region id="30" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="236" end="239">
+      <name>!$omp critical @SWE_WaveAccumulationBlock.cpp:236</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="31" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="280" end="311">
+      <name>!$omp for @SWE_WaveAccumulationBlock.cpp:280</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="32" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="280" end="311">
+      <name>!$omp parallel @SWE_WaveAccumulationBlock.cpp:280</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="33" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="311" end="311">
+      <name>!$omp ibarrier @SWE_WaveAccumulationBlock.cpp:311</name>
+      <url></url>
+      <descr>OMP</descr>
+    </region>
+    <region id="34" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="81" end="-1">
+      <name>main</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <region id="35" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="83" end="-1">
+      <name>main_region</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <region id="36" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_Block.cpp" begin="100" end="-1">
+      <name>initScenario</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <region id="37" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="207" end="-1">
+      <name>main_region_init_checkpoints</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <region id="38" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="277" end="-1">
+      <name>main_loop</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <region id="39" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_Block.cpp" begin="423" end="-1">
+      <name>setGhostLayer</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <region id="40" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="76" end="-1">
+      <name>computeNumericalFluxes</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <region id="41" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="234" end="-1">
+      <name>WaveAccBlock_compNumFlux_crit</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <region id="42" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/blocks/SWE_WaveAccumulationBlock.cpp" begin="275" end="-1">
+      <name>updateUnknowns</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <region id="43" mod="/home/hpc/t1221/lu26xan/Abschlussprojekt/SWE/src/examples/swe_simple.cpp" begin="324" end="-1">
+      <name>main_loop_write</name>
+      <url></url>
+      <descr>USR</descr>
+    </region>
+    <cnode id="0" calleeId="34">
+      <cnode id="1" calleeId="35">
+        <cnode id="2" calleeId="36">
+        </cnode>
+        <cnode id="3" calleeId="37">
+          <cnode id="4" calleeId="37">
+          </cnode>
+          <cnode id="5" calleeId="38">
+            <cnode id="6" calleeId="39">
+            </cnode>
+            <cnode id="7" calleeId="40">
+              <cnode id="8" calleeId="23">
+                <cnode id="9" calleeId="25">
+                  <cnode id="10" calleeId="26">
+                  </cnode>
+                </cnode>
+                <cnode id="11" calleeId="27">
+                  <cnode id="12" calleeId="28">
+                  </cnode>
+                </cnode>
+                <cnode id="13" calleeId="41">
+                  <cnode id="14" calleeId="30">
+                    <cnode id="15" calleeId="29">
+                    </cnode>
+                  </cnode>
+                </cnode>
+                <cnode id="16" calleeId="24">
+                </cnode>
+              </cnode>
+            </cnode>
+            <cnode id="17" calleeId="42">
+              <cnode id="18" calleeId="32">
+                <cnode id="19" calleeId="31">
+                  <cnode id="20" calleeId="33">
+                  </cnode>
+                </cnode>
+              </cnode>
+            </cnode>
+            <cnode id="21" calleeId="43">
+            </cnode>
+          </cnode>
+        </cnode>
+      </cnode>
+    </cnode>
+  </program>
+  <system>
+    <machine Id="0">
+      <name>Linux Intel</name>
+      <node Id="0">
+        <name>mac-snb02</name>
+        <process Id="0">
+          <name></name>
+          <rank>0</rank>
+          <thread Id="0">
+            <name></name>
+            <rank>0</rank>
+          </thread>
+          <thread Id="1">
+            <name></name>
+            <rank>1</rank>
+          </thread>
+          <thread Id="2">
+            <name></name>
+            <rank>2</rank>
+          </thread>
+          <thread Id="3">
+            <name></name>
+            <rank>3</rank>
+          </thread>
+          <thread Id="4">
+            <name></name>
+            <rank>4</rank>
+          </thread>
+          <thread Id="5">
+            <name></name>
+            <rank>5</rank>
+          </thread>
+          <thread Id="6">
+            <name></name>
+            <rank>6</rank>
+          </thread>
+          <thread Id="7">
+            <name></name>
+            <rank>7</rank>
+          </thread>
+        </process>
+      </node>
+    </machine>
+    <topologies>
+      <cart name="Process/Thread" ndims="2">
+        <dim name="Thread" size="8" periodic="true"/>
+        <dim name="Process" size="1" periodic="false"/>
+        <coord thrdId="0">0 0</coord>
+        <coord thrdId="1">1 0</coord>
+        <coord thrdId="2">2 0</coord>
+        <coord thrdId="3">3 0</coord>
+        <coord thrdId="4">4 0</coord>
+        <coord thrdId="5">5 0</coord>
+        <coord thrdId="6">6 0</coord>
+        <coord thrdId="7">7 0</coord>
+      </cart>
+    </topologies>
+  </system>
+  <severity>
+    <matrix metricId="0">
+      <row cnodeId="0">
+1.92541629076e-05
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="1">
+0.0540424855426
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="2">
+0.0682484647259
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="3">
+6.04745000601e-05
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="4">
+29.340549266
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="5">
+0.255135868676
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="6">
+0.445759850554
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="7">
+0.0194996539503
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="8">
+0.0461638793349
+0.0500533794984
+0.0496617136523
+0.0492632165551
+0.0465410910547
+0.0482275960967
+0.0467266244814
+0.0496702883393
+      </row>
+      <row cnodeId="9">
+15.566861365
+15.431991308
+18.7349829888
+18.7159721032
+15.3628509399
+18.7234654063
+15.4132801304
+18.7150004683
+      </row>
+      <row cnodeId="10">
+3.22540645208
+3.35673777573
+0.0554482145235
+0.0749495420605
+3.42900970206
+0.067341000773
+3.37861726433
+0.0755319809541
+      </row>
+      <row cnodeId="11">
+14.1370806331
+14.0910313651
+16.4178222818
+16.4411850115
+14.0401566019
+16.4888683772
+14.0377273755
+16.5385343824
+      </row>
+      <row cnodeId="12">
+2.44474753179
+2.49019179866
+0.163286298513
+0.140095817856
+2.5411616303
+0.092290179804
+2.54357531574
+0.0422601653263
+      </row>
+      <row cnodeId="13">
+0.00186300184578
+0.0014168843627
+0.00174315739423
+0.00151798594743
+0.00177986826748
+0.00171779096127
+0.00169229973108
+0.00170298945159
+      </row>
+      <row cnodeId="14">
+0.0228464053944
+0.0214578192681
+0.0321527700871
+0.0270697912201
+0.0179179254919
+0.0316997673362
+0.0173874590546
+0.033030400984
+      </row>
+      <row cnodeId="15">
+0.000376703217626
+0.000381204299629
+0.000444400124252
+0.000451170839369
+0.000478555448353
+0.000523261725903
+0.000496379099786
+0.000427918508649
+      </row>
+      <row cnodeId="16">
+0.0209331484511
+0.0230175852776
+0.0107372952625
+0.0157744809985
+0.0263828057796
+0.01214573998
+0.0267762718722
+0.0101205259562
+      </row>
+      <row cnodeId="17">
+0.0166291547939
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="18">
+0.0379660045728
+0.0382946562022
+0.0400371430442
+0.0395980095491
+0.0382250947878
+0.0398053536192
+0.0381727376953
+0.0399472014979
+      </row>
+      <row cnodeId="19">
+11.9596627001
+11.7030385844
+22.4014736721
+22.2625267515
+11.7310137292
+22.2702282481
+11.9572915798
+22.3576342259
+      </row>
+      <row cnodeId="20">
+10.5126666911
+10.7689621551
+0.068784580566
+0.208170634694
+10.7410565717
+0.200261794031
+10.5148310782
+0.112713968381
+      </row>
+      <row cnodeId="21">
+2.40718945861e-05
+0
+0
+0
+0
+0
+0
+0
+      </row>
+    </matrix>
+    <matrix metricId="1">
+      <row cnodeId="0">
+1
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="1">
+1
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="2">
+1
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="3">
+1
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="4">
+1
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="5">
+1
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="6">
+3807
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="7">
+3807
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="8">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="9">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="10">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="11">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="12">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="13">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="14">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="15">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="16">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="17">
+3807
+0
+0
+0
+0
+0
+0
+0
+      </row>
+      <row cnodeId="18">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="19">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="20">
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+3807
+      </row>
+      <row cnodeId="21">
+20
+0
+0
+0
+0
+0
+0
+0
+      </row>
+    </matrix>
+    <matrix metricId="2">
+      <row cnodeId="8">
+0.040115733631
+0.0417664255947
+0.041725368239
+0.0420908089727
+0.0398269593716
+0.0409963643178
+0.0400511864573
+0.0413812855259
+      </row>
+      <row cnodeId="18">
+0.0363816646859
+0.0367863783613
+0.037365173921
+0.0377400126308
+0.0366811221465
+0.037540094927
+0.0367014268413
+0.0374347371981
+      </row>
+    </matrix>
+    <matrix metricId="3">
+      <row cnodeId="8">
+0.0278116008267
+0.0299121057615
+0.0299240266904
+0.0298488112167
+0.028354360722
+0.0299414722249
+0.0284257940948
+0.0299447719008
+      </row>
+      <row cnodeId="18">
+0.0240436755121
+0.0244511496276
+0.0262689385563
+0.0261709000915
+0.0244268104434
+0.0263131782413
+0.0244756629691
+0.0263414084911
+      </row>
+    </matrix>
+    <matrix metricId="4">
+    </matrix>
+    <matrix metricId="5">
+      <row cnodeId="10">
+3.21302992664
+3.34408144373
+0.0416026217863
+0.0612613027915
+3.4164421251
+0.0533905737102
+3.36593762785
+0.0614772001281
+      </row>
+      <row cnodeId="12">
+2.43097950332
+2.47636070754
+0.14790184889
+0.124916811474
+2.52716539148
+0.0768750589341
+2.52945562359
+0.0268628755584
+      </row>
+      <row cnodeId="16">
+0.0170026654378
+0.0188747476786
+0.00651437602937
+0.0120219700038
+0.0216083740816
+0.00694463308901
+0.0222200071439
+0.00549870822579
+      </row>
+      <row cnodeId="20">
+10.5002097646
+10.7564339247
+0.0549249500036
+0.194492232986
+10.7283292972
+0.186324826442
+10.5019880868
+0.0987925231457
+      </row>
+    </matrix>
+  </severity>
+</cube>

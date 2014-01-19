@@ -1,0 +1,13 @@
+The Output-folders are named as follows:
+
+Partition_Problemsize_n(number_of_threads)_codeVersion
+
+for example:
+
+Snb_150_n1_v2 
+
+means: 	Problemsize = 150 * 150
+	Number of Threads = 1
+	Codeversion = v2
+
+The last part are optional suffices, for example "Blocking4" or "64ByteAlignment"
