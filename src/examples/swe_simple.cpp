@@ -32,7 +32,7 @@
 #include <iostream>
 
 
-#define WRITE_OUTPUT 0
+#define WRITE_OUTPUT 1
 
 
 

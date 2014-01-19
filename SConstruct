@@ -199,9 +199,6 @@ if env['useScalasca']:
 	else:
 		if env['parallelization'] == 'mpi':
 			env['CXX'] = 'scalasca -instrument -comp=none -user -mode=mpi ' + env['CXX']
-		else:
-			print 'ERROR: Scalasca has to be used with OpenMP or MPI (or both) (Scons openmp=true / parallelization=mpi)'
-			Exit(1)
 	
 # eclipse specific flag
 if env['compiler'] != 'cray':

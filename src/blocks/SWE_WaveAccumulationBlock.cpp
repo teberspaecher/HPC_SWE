@@ -44,9 +44,9 @@
 #include <omp.h>
 #endif
 
-#define BLOCK_SIZE 4
-//#define CHUNK_SIZE ny_end/omp_get_num_threads()/10
-#define CHUNK_SIZE 4
+// Blocking the intel array notation was slower #define BLOCK_SIZE 4
+#define CHUNK_SIZE ny_end/omp_get_num_threads()/10
+//#define CHUNK_SIZE 15
 /**
  * Constructor of a SWE_WaveAccumulationBlock.
  *
@@ -104,11 +104,11 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 	__assume_aligned(&hNetUpdates, 64);
 	__assume_aligned(&huNetUpdates, 64);
 
-	__declspec(align(64)) float arr_hNetUpLeft[BLOCK_SIZE]; 
-	__declspec(align(64)) float arr_hNetUpRight[BLOCK_SIZE]; 
-	__declspec(align(64)) float arr_huNetUpLeft[BLOCK_SIZE]; 
-	__declspec(align(64)) float arr_huNetUpRight[BLOCK_SIZE]; 
-	__declspec(align(64)) float arr_maxEdgeSpeedVerti[BLOCK_SIZE];
+	__declspec(align(64)) float arr_hNetUpLeft[ny_end - 1]; 
+	__declspec(align(64)) float arr_hNetUpRight[ny_end - 1]; 
+	__declspec(align(64)) float arr_huNetUpLeft[ny_end - 1]; 
+	__declspec(align(64)) float arr_huNetUpRight[ny_end - 1]; 
+	__declspec(align(64)) float arr_maxEdgeSpeedVerti[ny_end - 1];
 #endif
 
 	//std::cout << "ny_end: " << ny_end << std::endl;
@@ -122,56 +122,26 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 	for(int i = 1; i < nx+2; i++) {
 
 	#ifdef VECTORIZE // Vectorize the inner loop
-		// BLOCK_SIZE has to be a divisor of the grid-size
-		for (int iBlock = 1; iBlock < ny_end; iBlock += BLOCK_SIZE)
-		{
-			wavePropagationSolver.computeNetUpdates( h[i-1][iBlock:BLOCK_SIZE], h[i][iBlock:BLOCK_SIZE],
-												   hu[i-1][iBlock:BLOCK_SIZE], hu[i][iBlock:BLOCK_SIZE],
-												   b[i-1][iBlock:BLOCK_SIZE], b[i][iBlock:BLOCK_SIZE],
-												   arr_hNetUpLeft[:], arr_hNetUpRight[:],
-												   arr_huNetUpLeft[:], arr_huNetUpRight[:],
-												   arr_maxEdgeSpeedVerti[:] );
-				
-			// accumulate net updates to cell-wise net updates for h and hu
-			hNetUpdates[i-1][iBlock:BLOCK_SIZE]  += dx_inv * arr_hNetUpLeft[:];
-			huNetUpdates[i-1][iBlock:BLOCK_SIZE] += dx_inv * arr_huNetUpLeft[:];
-			hNetUpdates[i][iBlock:BLOCK_SIZE]    += dx_inv * arr_hNetUpRight[:];
-			huNetUpdates[i][iBlock:BLOCK_SIZE]   += dx_inv * arr_huNetUpRight[:];
+		wavePropagationSolver.computeNetUpdates( h[i-1][1:ny_end - 1], h[i][1:ny_end - 1],
+											   hu[i-1][1:ny_end - 1], hu[i][1:ny_end - 1],
+											   b[i-1][1:ny_end - 1], b[i][1:ny_end - 1],
+											   arr_hNetUpLeft[:], arr_hNetUpRight[:],
+											   arr_huNetUpLeft[:], arr_huNetUpRight[:],
+											   arr_maxEdgeSpeedVerti[:] );
 			
-			#ifdef LOOP_OPENMP
-				//update the thread-local maximum wave speed
-				l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
-			#else // LOOP_OPENMP
-				//update the maximum wave speed
-				maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
-			#endif // LOOP_OPENMP
-		}
+		// accumulate net updates to cell-wise net updates for h and hu
+		hNetUpdates[i-1][1:ny_end - 1]  += dx_inv * arr_hNetUpLeft[:];
+		huNetUpdates[i-1][1:ny_end - 1] += dx_inv * arr_huNetUpLeft[:];
+		hNetUpdates[i][1:ny_end - 1]    += dx_inv * arr_hNetUpRight[:];
+		huNetUpdates[i][1:ny_end - 1]   += dx_inv * arr_huNetUpRight[:];
 		
-		// If ny_end is not a divisor of the blocksize, the remaining elements have to be processed
-		int remainder = (ny_end-1)%BLOCK_SIZE;
-		if (remainder != 0)
-		{		
-			wavePropagationSolver.computeNetUpdates( h[i-1][ny_end-remainder:remainder], h[i][ny_end-remainder:remainder],
-												   hu[i-1][ny_end-remainder:remainder], hu[i][ny_end-remainder:remainder],
-												   b[i-1][ny_end-remainder:remainder], b[i][ny_end-remainder:remainder],
-												   arr_hNetUpLeft[0:remainder], arr_hNetUpRight[0:remainder],
-												   arr_huNetUpLeft[0:remainder], arr_huNetUpRight[0:remainder],
-												   arr_maxEdgeSpeedVerti[0:remainder] );
-				
-			// accumulate net updates to cell-wise net updates for h and hu
-			hNetUpdates[i-1][ny_end-remainder:remainder]  += dx_inv * arr_hNetUpLeft[0:remainder];
-			huNetUpdates[i-1][ny_end-remainder:remainder] += dx_inv * arr_huNetUpLeft[0:remainder];
-			hNetUpdates[i][ny_end-remainder:remainder]    += dx_inv * arr_hNetUpRight[0:remainder];
-			huNetUpdates[i][ny_end-remainder:remainder]   += dx_inv * arr_huNetUpRight[0:remainder];
-			
-			#ifdef LOOP_OPENMP
-				//update the thread-local maximum wave speed
-				l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[0:remainder]));
-			#else // LOOP_OPENMP
-				//update the maximum wave speed
-				maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[0:remainder]));
-			#endif // LOOP_OPENMP
-		}
+		#ifdef LOOP_OPENMP
+			//update the thread-local maximum wave speed
+			l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
+		#else // LOOP_OPENMP
+			//update the maximum wave speed
+			maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedVerti[:]));
+		#endif // LOOP_OPENMP
 		/* Code producing strange differences in output files
 		for(int j = 1; j < ny_end; j++) {
 
@@ -242,11 +212,11 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 
 	ny_end = ny+2;	// compiler refused to vectorize j-loop without this ...
 #ifdef VECTORIZE // Vectorize the inner loop	
-	__declspec(align(64)) float arr_hNetUpDown[BLOCK_SIZE]; 
-	__declspec(align(64)) float arr_hNetUpUpwards[BLOCK_SIZE]; 
-	__declspec(align(64)) float arr_hvNetUpDown[BLOCK_SIZE]; 
-	__declspec(align(64)) float arr_hvNetUpUpwards[BLOCK_SIZE]; 
-	__declspec(align(64)) float arr_maxEdgeSpeedHori[BLOCK_SIZE];
+	__declspec(align(64)) float arr_hNetUpDown[ny_end - 1]; 
+	__declspec(align(64)) float arr_hNetUpUpwards[ny_end - 1]; 
+	__declspec(align(64)) float arr_hvNetUpDown[ny_end - 1]; 
+	__declspec(align(64)) float arr_hvNetUpUpwards[ny_end - 1]; 
+	__declspec(align(64)) float arr_maxEdgeSpeedHori[ny_end - 1];
 #endif
 
 #ifdef LOOP_OPENMP // Use OpenMP for the outer loop
@@ -259,55 +229,25 @@ void SWE_WaveAccumulationBlock::computeNumericalFluxes() {
 	for(int i = 1; i < nx+1; i++) {
 
 	#ifdef VECTORIZE // Vectorize the inner loop	
-		// BLOCK_SIZE has to be a divisor of the grid-size
-		for (int iBlock = 1; iBlock < ny_end; iBlock += BLOCK_SIZE)
-		{
-			/*	Vectorized Code with Intel Array Notation */
-			wavePropagationSolver.computeNetUpdates( h[i][iBlock-1:BLOCK_SIZE], h[i][iBlock:BLOCK_SIZE],
-											   hv[i][iBlock-1:BLOCK_SIZE], hv[i][iBlock:BLOCK_SIZE],
-											   b[i][iBlock-1:BLOCK_SIZE], b[i][iBlock:BLOCK_SIZE],
-											   arr_hNetUpDown[:], arr_hNetUpUpwards[:],
-											   arr_hvNetUpDown[:], arr_hvNetUpUpwards[:],
-											   arr_maxEdgeSpeedHori[:] );
-			// accumulate net updates to cell-wise net updates for h and hu
-			hNetUpdates[i][iBlock-1:BLOCK_SIZE]  += dy_inv * arr_hNetUpDown[:];
-			hvNetUpdates[i][iBlock-1:BLOCK_SIZE] += dy_inv * arr_hvNetUpDown[:];
-			hNetUpdates[i][iBlock:BLOCK_SIZE]    += dy_inv * arr_hNetUpUpwards[:];
-			hvNetUpdates[i][iBlock:BLOCK_SIZE]   += dy_inv * arr_hvNetUpUpwards[:];	
-			
-			#ifdef LOOP_OPENMP
-				//update the thread-local maximum wave speed
-				l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[:]));
-			#else // LOOP_OPENMP
-				//update the maximum wave speed
-				maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[:]));
-			#endif // LOOP_OPENMP		
-		}
-		// If ny_end is not a divisor of the blocksize, the remaining elements have to be processed
-		int remainder = (ny_end-1)%BLOCK_SIZE;
-		if (remainder != 0)
-		{	
-			/*	Vectorized Code with Intel Array Notation */
-			wavePropagationSolver.computeNetUpdates( h[i][ny_end-remainder-1:remainder], h[i][ny_end-remainder:remainder],
-											   hv[i][ny_end-remainder-1:remainder], hv[i][ny_end-remainder:remainder],
-											   b[i][ny_end-remainder-1:remainder], b[i][ny_end-remainder:remainder],
-											   arr_hNetUpDown[0:remainder], arr_hNetUpUpwards[0:remainder],
-											   arr_hvNetUpDown[0:remainder], arr_hvNetUpUpwards[0:remainder],
-											   arr_maxEdgeSpeedHori[0:remainder] );
-			// accumulate net updates to cell-wise net updates for h and hu
-			hNetUpdates[i][ny_end-remainder-1:remainder]  += dy_inv * arr_hNetUpDown[0:remainder];
-			hvNetUpdates[i][ny_end-remainder-1:remainder] += dy_inv * arr_hvNetUpDown[0:remainder];
-			hNetUpdates[i][ny_end-remainder:remainder]    += dy_inv * arr_hNetUpUpwards[0:remainder];
-			hvNetUpdates[i][ny_end-remainder:remainder]   += dy_inv * arr_hvNetUpUpwards[0:remainder];	
-			
-			#ifdef LOOP_OPENMP
-				//update the thread-local maximum wave speed
-				l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[0:remainder]));
-			#else // LOOP_OPENMP
-				//update the maximum wave speed
-				maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[0:remainder]));
-			#endif // LOOP_OPENMP			
-		}
+		wavePropagationSolver.computeNetUpdates( h[i][0:ny_end - 1], h[i][1:ny_end - 1],
+										   hv[i][0:ny_end - 1], hv[i][1:ny_end - 1],
+										   b[i][0:ny_end - 1], b[i][1:ny_end - 1],
+										   arr_hNetUpDown[:], arr_hNetUpUpwards[:],
+										   arr_hvNetUpDown[:], arr_hvNetUpUpwards[:],
+										   arr_maxEdgeSpeedHori[:] );
+		// accumulate net updates to cell-wise net updates for h and hu
+		hNetUpdates[i][0:ny_end - 1]  += dy_inv * arr_hNetUpDown[:];
+		hvNetUpdates[i][0:ny_end - 1] += dy_inv * arr_hvNetUpDown[:];
+		hNetUpdates[i][1:ny_end - 1]    += dy_inv * arr_hNetUpUpwards[:];
+		hvNetUpdates[i][1:ny_end - 1]   += dy_inv * arr_hvNetUpUpwards[:];	
+		
+		#ifdef LOOP_OPENMP
+			//update the thread-local maximum wave speed
+			l_maxWaveSpeed = std::max(l_maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[:]));
+		#else // LOOP_OPENMP
+			//update the maximum wave speed
+			maxWaveSpeed = std::max(maxWaveSpeed, __sec_reduce_max(arr_maxEdgeSpeedHori[:]));
+		#endif // LOOP_OPENMP	
 	/* Not vectorized Code 
 		for(int j = 1; j < ny_end; j++) {
 			float maxEdgeSpeed;
@@ -415,9 +355,16 @@ void SWE_WaveAccumulationBlock::updateUnknowns(float dt) {
 	EPIK_FUNC_START();
 #endif
 
+	__assume_aligned(&h, 64);
+	__assume_aligned(&hu, 64);
+	__assume_aligned(&b, 64);
+	__assume_aligned(&hNetUpdates, 64);
+	__assume_aligned(&huNetUpdates, 64);
+	__assume_aligned(&hvNetUpdates, 64);
+	int ny_end = ny + 1;
   //update cell averages with the net-updates
 #ifdef LOOP_OPENMP
-	#pragma omp parallel for
+	#pragma omp parallel for schedule(dynamic, CHUNK_SIZE)
 #endif // LOOP_OPENMP
 	for(int i = 1; i < nx+1; i++) {
 #ifdef VECTORIZE
